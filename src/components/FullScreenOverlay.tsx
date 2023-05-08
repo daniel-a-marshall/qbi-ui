@@ -1,6 +1,7 @@
+import React from "react";
 import { Portal } from "@mui/base";
 import type { ReactNode } from "react";
-import { classes } from "~/utils";
+import { classes } from "./utils";
 
 export type FullScreenOverlayProps = {
   children: ReactNode;

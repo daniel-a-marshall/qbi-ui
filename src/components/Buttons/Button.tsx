@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { classes } from "./utils";
+import { classes } from "../utils";
 
 type ButtonProps = {
   children: React.ReactNode;

@@ -55,6 +55,9 @@
   ],
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@mui/base": "^5.0.0-alpha.127"
+    "@mui/base": "^5.0.0-alpha.127",
+    "@tanstack/react-virtual": "^3.0.0-beta.18",
+    "downshift": "^7.6.0",
+    "match-sorter": "^6.3.1"
   }
 }

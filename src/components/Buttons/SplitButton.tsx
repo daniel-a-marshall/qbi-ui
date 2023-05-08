@@ -1,10 +1,10 @@
+import React from "react";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { ReactNode } from "react";
-import { classes } from "./utils";
+import { classes } from "../utils";
 import Button from "./Button";
-import { Menu, MenuButton, UnstyledMenuButton } from "./Menu";
-import React from "react";
+import { Menu, MenuButton, UnstyledMenuButton } from "../Menu";
 
 export function BaseSplitButton(props: { children: ReactNode }) {
   return <div className="flex flex-nowrap items-center">{props.children}</div>;

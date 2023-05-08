@@ -12,7 +12,7 @@ import Popper from "@mui/base/Popper";
 import ClickAwayListener from "@mui/base/ClickAwayListener";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import Button from "./Button";
+import { Button } from "./Buttons";
 
 type MenuContextType = {
   buttonRef: HTMLElement | null;

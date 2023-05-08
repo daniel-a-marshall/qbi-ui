@@ -8,7 +8,7 @@ const peerDepsExternal = require("rollup-plugin-peer-deps-external");
 
 export default [
   {
-    input: "src/index.ts",
+    input: "src/components/index.ts",
     output: [
       {
         file: packageJson.main,
@@ -23,6 +23,10 @@ export default [
       typescript({ tsconfig: "./tsconfig.json" }),
       terser(),
     ],
+  },
+  {
+    input: "tailwind.config.js",
+    output: [{ file: "dist/tailwind.config.js", format: "cjs" }],
   },
   {
     input: "dist/types/index.d.ts",

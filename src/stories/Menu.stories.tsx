@@ -1,9 +1,9 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
-import { Menu, MenuButton, MenuItem, MenuList } from "../components/Menu";
+import { Menu, MenuButton, MenuItem, MenuList } from "../components";
 
 const meta = {
-  title: "Buttons/Menu",
+  title: "Misc/Menu",
   component: Menu,
   tags: ["autodocs"],
 } satisfies Meta<typeof Menu>;
@@ -12,6 +12,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
+  //@ts-ignore
   args: {},
   render: () => (
     <Menu>

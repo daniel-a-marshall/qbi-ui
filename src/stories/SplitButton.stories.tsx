@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
-import SplitButton from "../components/SplitButton";
-import { MenuItem, MenuList } from "../components/Menu";
+import { SplitButton } from "../components";
+import { MenuItem, MenuList } from "../components";
 
 const meta = {
   title: "Buttons/SplitButton",

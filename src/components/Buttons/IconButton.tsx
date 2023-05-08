@@ -1,5 +1,5 @@
 import React from "react";
-import { classes } from "./utils";
+import { classes } from "../utils";
 
 type IconButtonProps = {
   children: React.ReactNode;

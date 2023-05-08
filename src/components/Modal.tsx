@@ -1,12 +1,12 @@
 import type { FullScreenOverlayProps } from "./FullScreenOverlay";
 import type { ReactNode } from "react";
 
+import React from "react";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { classes } from "./utils";
 import FullScreenOverlay from "./FullScreenOverlay";
-import IconButton from "./IconButton";
-import React from "react";
+import IconButton from "./Buttons/IconButton";
 
 type ModalProps = {
   children: ReactNode;
