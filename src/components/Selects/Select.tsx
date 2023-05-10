@@ -151,7 +151,6 @@ function ControlledSelect({
   );
 
   return (
-    <>
       <div
         className={classes(
           "border border-gray-200 rounded bg-white flex focus-within:outline focus-within:outline-1 focus-within:outline-primary-600",
@@ -195,7 +194,7 @@ function ControlledSelect({
             </svg>
           )}
         </button>
-      </div>
+      
       <div className={!isOpen ? "hidden" : ""} {...getMenuProps()}>
         <Popper
           open={isOpen}
@@ -257,6 +256,6 @@ function ControlledSelect({
           ) : null}
         </Popper>
       </div>
-    </>
+      </div>
   );
 }

@@ -171,7 +171,7 @@ export default function MultiSelect({
   );
 
   return (
-    <>
+    
       <div
         className={classes(
           "border border-gray-200 rounded bg-white grid grid-cols-[1fr_auto] focus-within:outline focus-within:outline-1 focus-within:outline-primary-600",
@@ -254,7 +254,7 @@ export default function MultiSelect({
             </svg>
           )}
         </button>
-      </div>
+      
       <div className={!isOpen ? "hidden" : ""} {...getMenuProps()}>
         <Popper
           open={isOpen}
@@ -381,6 +381,6 @@ export default function MultiSelect({
           ) : null}
         </Popper>
       </div>
-    </>
+      </div>
   );
 }
