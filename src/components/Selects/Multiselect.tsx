@@ -1,11 +1,10 @@
-import React from "react";
-import { useCombobox } from "downshift";
+import React, { useCallback } from "react";
+import { useCombobox, useMultipleSelection } from "downshift";
 import Popper from "@mui/base/Popper";
 import { classes, findMatches } from "./utils";
 import CircleSpinner from "../CircleSpinner";
 import OptionList from "./OptionList";
 import VirtualOptionList from "./VirtualOptionList";
-import useEnhancedMultipleSelection from "./useEnhancedMultipleSelection";
 
 export type MultiselectProps = {
   options: string[];
@@ -30,6 +29,7 @@ export default function MultiSelect({
   onToggle,
   maxRows,
 }: MultiselectProps) {
+  const lastSelectedIndex = React.useRef(-1);
   const options = React.useMemo(() => initialOptions, [initialOptions]);
   const [inputValue, setInputValue] = React.useState("");
   const filteredOptions = React.useMemo(
@@ -40,18 +40,34 @@ export default function MultiSelect({
   const ref = React.useRef<HTMLDivElement | null>(null);
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
-  const {
-    getSelectedItemProps,
-    getDropdownProps,
-    removeSelectedItem,
-    setSelectedItems,
-    setLastSelectedIndex,
-    getEnhancedItemProps,
-  } = useEnhancedMultipleSelection({
-    selectedItems: value,
-    onSelectItems: onChange,
-    items: filteredOptions,
-  });
+  const { getSelectedItemProps, getDropdownProps, removeSelectedItem, setSelectedItems: _setSelectedItems } =
+    useMultipleSelection({
+      selectedItems: value,
+      onStateChange: changes => {
+        switch (changes.type) {
+          case useMultipleSelection.stateChangeTypes
+            .SelectedItemKeyDownBackspace:
+          case useMultipleSelection.stateChangeTypes.SelectedItemKeyDownDelete:
+          case useMultipleSelection.stateChangeTypes.DropdownKeyDownBackspace:
+          case useMultipleSelection.stateChangeTypes.FunctionRemoveSelectedItem:
+          case useMultipleSelection.stateChangeTypes.FunctionSetSelectedItems:
+            onChange(changes.selectedItems as string[]);
+            break;
+          default:
+            break;
+        }
+      }
+    });
+
+    const setSelectedItems = useCallback(
+      (selection: string[]) => {
+        const keep = value.filter(s => !selection.includes(s));
+        const add = selection.filter(s => !value.includes(s));
+  
+        _setSelectedItems([...keep, ...add]);
+      },
+      [_setSelectedItems, value]
+    );
 
   const {
     isOpen,
@@ -86,11 +102,11 @@ export default function MultiSelect({
       switch (changes.type) {
         case useCombobox.stateChangeTypes.InputChange:
           setInputValue(changes.inputValue || "");
-          setLastSelectedIndex(-1);
+          lastSelectedIndex.current = -1;
           break;
         case useCombobox.stateChangeTypes.InputBlur:
           setInputValue("");
-          setLastSelectedIndex(-1);
+          lastSelectedIndex.current = -1;
           break;
         default:
           break;
@@ -98,6 +114,27 @@ export default function MultiSelect({
     },
     onIsOpenChange: ({ isOpen }) => onToggle?.(isOpen || false),
   });
+
+  
+
+  const handleOptionSelect = useCallback(
+    (e: React.MouseEvent | React.KeyboardEvent, index: number) => {
+      const selection =
+        !e.shiftKey || lastSelectedIndex.current === -1
+          ? [filteredOptions[index]]
+          : filteredOptions.slice(
+              Math.min(lastSelectedIndex.current, index) +
+                +(index > lastSelectedIndex.current),
+              Math.max(lastSelectedIndex.current, index) +
+                +(index > lastSelectedIndex.current)
+            );
+
+      lastSelectedIndex.current = index;
+
+      setSelectedItems(selection);
+    },
+    [filteredOptions, setSelectedItems]
+  );
 
   const handlePaste = React.useCallback(
     (e: React.ClipboardEvent<HTMLInputElement>) => {
@@ -186,6 +223,14 @@ export default function MultiSelect({
             {...getInputProps({
               ...getDropdownProps({ preventKeyAction: isOpen, ref: inputRef }),
               onPaste: handlePaste,
+              onKeyDown: e => {
+                if (e.key === "Enter") {
+                  //eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  //@ts-ignore
+                  e.nativeEvent.preventDownshiftDefault = true;
+                  handleOptionSelect(e, highlightedIndex);
+                }
+              }
             })}
           />
         </div>
@@ -293,7 +338,16 @@ export default function MultiSelect({
                   <OptionList
                     options={filteredOptions}
                     itemPropsGetter={({ item, index }) =>
-                      getItemProps(getEnhancedItemProps({ item, index }))
+                      getItemProps({
+                        item, 
+                        index,
+                        onClick: (e: React.MouseEvent) => {
+                          //eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                          //@ts-ignore
+                          e.nativeEvent.preventDownshiftDefault = true;
+                          handleOptionSelect(e, index);
+                        },
+                      })
                     }
                     inputValue={inputValue}
                     selected={value}
@@ -304,7 +358,16 @@ export default function MultiSelect({
                   <VirtualOptionList
                     options={filteredOptions}
                     itemPropsGetter={({ item, index }) =>
-                      getItemProps(getEnhancedItemProps({ item, index }))
+                      getItemProps({
+                        item, 
+                        index,
+                        onClick: (e: React.MouseEvent) => {
+                          //eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                          //@ts-ignore
+                          e.nativeEvent.preventDownshiftDefault = true;
+                          handleOptionSelect(e, index);
+                        },
+                      })
                     }
                     inputValue={inputValue}
                     selected={value}

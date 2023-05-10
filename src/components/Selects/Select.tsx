@@ -48,8 +48,6 @@ export function UncontrolledSelect({
 }: SelectProps) {
   const [value, setValue] = React.useState(initialValue || "");
 
-  console.log({ value });
-
   return (
     <>
       <input type="hidden" value={value} name={name} />
