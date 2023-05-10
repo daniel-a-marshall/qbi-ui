@@ -9,6 +9,7 @@ import { classes, findMatches } from "./utils";
 import CircleSpinner from "../CircleSpinner";
 import OptionList from "./OptionList";
 import VirtualOptionList from "./VirtualOptionList";
+import useIsomorphicLayoutEffect from "../useIsomorphicLayoutEffect";
 
 export type SelectProps = {
   options: string[];
@@ -121,7 +122,8 @@ function ControlledSelect({
   });
 
   const latestInputValue = React.useRef(inputValue);
-  React.useLayoutEffect(() => {
+
+  useIsomorphicLayoutEffect(() => {
     latestInputValue.current = inputValue;
   }, [inputValue]);
 
