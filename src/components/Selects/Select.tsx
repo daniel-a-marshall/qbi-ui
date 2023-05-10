@@ -36,8 +36,8 @@ export type ControlledSelectProps = {
 };
 
 export default function Select({ value, onChange, ...props }: SelectProps) {
-  if (value && onChange) {
-    return <ControlledSelect value={value} onChange={onChange} {...props} />;
+  if (onChange) {
+    return <ControlledSelect value={value || ""} onChange={onChange} {...props} />;
   }
   return <UncontrolledSelect value={value} {...props} />;
 }
