@@ -214,11 +214,12 @@ export default function MultiSelect({
           ))}
           <input
             placeholder={
-              value.length ? undefined : placeholder || "Select an option..."
+              value.length ? undefined : placeholder || "Select options..."
             }
             className={classes(
-              value.length ? "pl-1" : "pl-2 text-gray-200",
-              "border-none pr-1 py-[0.125rem] truncate placeholder:text-inherit text-sm w-0 flex-auto min-w-[0.5rem] focus-within:outline-none"
+              value.length ? "pl-1" : "pl-2",
+              !value.length && !inputValue ? "opacity-40" : "",
+              "border-none pr-1 py-[0.125rem] truncate placeholder:text-inherit placeholder:text-opacity-40 text-sm w-0 flex-auto min-w-[0.5rem] focus-within:outline-none"
             )}
             {...getInputProps({
               ...getDropdownProps({ preventKeyAction: isOpen, ref: inputRef }),
