@@ -61,7 +61,7 @@ export default function ChipInput({
   return (
     <div
       className={classes(
-        "border border-gray-300 rounded bg-white w-full",
+        "border border-gray-200 rounded bg-white w-full",
         className
       )}
     >
