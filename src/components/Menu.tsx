@@ -162,7 +162,7 @@ export function MenuList(props: {
         },
         ...(props.modifiers || []),
       ]}
-      className="z-10"
+      className="z-[1000]"
     >
       <ClickAwayListener
         onClickAway={props.onClickOustide || (() => context.setIsOpen(false))}
