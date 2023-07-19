@@ -40,34 +40,37 @@ export default function MultiSelect({
   const ref = React.useRef<HTMLDivElement | null>(null);
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
-  const { getSelectedItemProps, getDropdownProps, removeSelectedItem, setSelectedItems: _setSelectedItems } =
-    useMultipleSelection({
-      selectedItems: value,
-      onStateChange: changes => {
-        switch (changes.type) {
-          case useMultipleSelection.stateChangeTypes
-            .SelectedItemKeyDownBackspace:
-          case useMultipleSelection.stateChangeTypes.SelectedItemKeyDownDelete:
-          case useMultipleSelection.stateChangeTypes.DropdownKeyDownBackspace:
-          case useMultipleSelection.stateChangeTypes.FunctionRemoveSelectedItem:
-          case useMultipleSelection.stateChangeTypes.FunctionSetSelectedItems:
-            onChange(changes.selectedItems as string[]);
-            break;
-          default:
-            break;
-        }
+  const {
+    getSelectedItemProps,
+    getDropdownProps,
+    removeSelectedItem,
+    setSelectedItems: _setSelectedItems,
+  } = useMultipleSelection({
+    selectedItems: value,
+    onStateChange: (changes) => {
+      switch (changes.type) {
+        case useMultipleSelection.stateChangeTypes.SelectedItemKeyDownBackspace:
+        case useMultipleSelection.stateChangeTypes.SelectedItemKeyDownDelete:
+        case useMultipleSelection.stateChangeTypes.DropdownKeyDownBackspace:
+        case useMultipleSelection.stateChangeTypes.FunctionRemoveSelectedItem:
+        case useMultipleSelection.stateChangeTypes.FunctionSetSelectedItems:
+          onChange(changes.selectedItems as string[]);
+          break;
+        default:
+          break;
       }
-    });
+    },
+  });
 
-    const setSelectedItems = useCallback(
-      (selection: string[]) => {
-        const keep = value.filter(s => !selection.includes(s));
-        const add = selection.filter(s => !value.includes(s));
-  
-        _setSelectedItems([...keep, ...add]);
-      },
-      [_setSelectedItems, value]
-    );
+  const setSelectedItems = useCallback(
+    (selection: string[]) => {
+      const keep = value.filter((s) => !selection.includes(s));
+      const add = selection.filter((s) => !value.includes(s));
+
+      _setSelectedItems([...keep, ...add]);
+    },
+    [_setSelectedItems, value]
+  );
 
   const {
     isOpen,
@@ -115,8 +118,6 @@ export default function MultiSelect({
     onIsOpenChange: ({ isOpen }) => onToggle?.(isOpen || false),
   });
 
-  
-
   const handleOptionSelect = useCallback(
     (e: React.MouseEvent | React.KeyboardEvent, index: number) => {
       const selection =
@@ -151,7 +152,7 @@ export default function MultiSelect({
       console.log({ values });
 
       const pastedItems = values.reduce((acc: string[], v: string) => {
-        const match = options.find(o => o === v);
+        const match = options.find((o) => o === v);
 
         if (match && !value.includes(match)) {
           acc.push(match);
@@ -171,90 +172,86 @@ export default function MultiSelect({
   );
 
   return (
-    
+    <div
+      className={classes(
+        "border border-gray-200 rounded bg-white grid grid-cols-[1fr_auto] focus-within:outline focus-within:outline-1 focus-within:outline-primary-600",
+        className
+      )}
+      ref={ref}
+    >
       <div
-        className={classes(
-          "border border-gray-200 rounded bg-white grid grid-cols-[1fr_auto] focus-within:outline focus-within:outline-1 focus-within:outline-primary-600",
-          className
-        )}
-        ref={ref}
+        className="flex gap-1 p-[0.375rem] flex-wrap overflow-x-hidden overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300"
+        style={{
+          maxHeight: maxRows
+            ? `${maxRows * 1.625 + (maxRows - 1) * 0.25}rem`
+            : "auto",
+        }}
       >
-        <div
-          className="flex gap-1 p-[0.375rem] flex-wrap overflow-x-hidden overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300"
-          style={{
-            maxHeight: maxRows
-              ? `${maxRows * 1.625 + (maxRows - 1) * 0.25}rem`
-              : "auto",
-          }}
-        >
-          {value.map((v, index) => (
-            <div
-              className="bg-gray-500 text-sm text-white px-2 py-[0.125rem] flex gap-2 items-center rounded flex-shrink-0 max-w-full"
-              key={`selected-item-${index}`}
-              {...getSelectedItemProps({ selectedItem: v, index })}
+        {value.map((v, index) => (
+          <div
+            className="bg-gray-500 text-sm text-white px-2 py-[0.125rem] flex gap-2 items-center rounded flex-shrink-0 max-w-full"
+            key={`selected-item-${index}`}
+            {...getSelectedItemProps({ selectedItem: v, index })}
+          >
+            <span className="truncate">{v}</span>
+            <span
+              className="cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                removeSelectedItem(v);
+              }}
             >
-              <span className="truncate">{v}</span>
-              <span
-                className="cursor-pointer"
-                onClick={e => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  removeSelectedItem(v);
-                }}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 384 512"
+                className="h-3 w-3 fill-white"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 384 512"
-                  className="h-3 w-3 fill-white"
-                >
-                  <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
-                </svg>
-              </span>
-            </div>
-          ))}
-          <input
-            placeholder={
-              value.length ? undefined : placeholder || "Select options..."
-            }
-            className={classes(
-              value.length ? "pl-1" : "pl-2",
-              !value.length && !inputValue ? "opacity-40" : "",
-              "border-none pr-1 py-[0.125rem] truncate placeholder:text-inherit placeholder:text-opacity-40 text-sm w-0 flex-auto min-w-[0.5rem] focus-within:outline-none"
-            )}
-            {...getInputProps({
-              ...getDropdownProps({ preventKeyAction: isOpen, ref: inputRef }),
-              onPaste: handlePaste,
-              onKeyDown: e => {
-                if (e.key === "Enter") {
-                  //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  //@ts-ignore
-                  e.nativeEvent.preventDownshiftDefault = true;
-                  handleOptionSelect(e, highlightedIndex);
-                }
-              }
-            })}
-          />
-        </div>
-        <button
-          className="border-l border-gray-200 px-3 flex items-center my-1"
-          {...getToggleButtonProps()}
-        >
-          {isLoading ? (
-            <CircleSpinner />
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 512 512"
-              className={classes(
-                "h-3 w-3 fill-gray-500",
-                isOpen && "rotate-180"
-              )}
-            >
-              <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-            </svg>
+                <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+              </svg>
+            </span>
+          </div>
+        ))}
+        <input
+          placeholder={
+            value.length ? undefined : placeholder || "Select options..."
+          }
+          className={classes(
+            value.length ? "pl-1" : "pl-2",
+            !value.length && !inputValue ? "opacity-40" : "",
+            "border-none pr-1 py-[0.125rem] truncate placeholder:text-inherit placeholder:text-opacity-40 text-sm w-0 flex-auto min-w-[0.5rem] focus-within:outline-none"
           )}
-        </button>
-      
+          {...getInputProps({
+            ...getDropdownProps({ preventKeyAction: isOpen, ref: inputRef }),
+            onPaste: handlePaste,
+            onKeyDown: (e) => {
+              if (e.key === "Enter") {
+                //eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                //@ts-ignore
+                e.nativeEvent.preventDownshiftDefault = true;
+                handleOptionSelect(e, highlightedIndex);
+              }
+            },
+          })}
+        />
+      </div>
+      <button
+        className="border-l border-gray-200 px-3 flex items-center my-1"
+        {...getToggleButtonProps()}
+      >
+        {isLoading ? (
+          <CircleSpinner />
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512"
+            className={classes("h-3 w-3 fill-gray-500", isOpen && "rotate-180")}
+          >
+            <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+          </svg>
+        )}
+      </button>
+
       <div className={!isOpen ? "hidden" : ""} {...getMenuProps()}>
         <Popper
           open={isOpen}
@@ -311,13 +308,13 @@ export default function MultiSelect({
                 <div className="text-sm flex justify-between items-center mx-1 px-2 pb-2 pt-1 border-b border-b-gray-100">
                   <button
                     className="hover:text-primary-dark"
-                    onMouseDown={e => {
+                    onMouseDown={(e) => {
                       e.preventDefault();
                       setSelectedItems(
-                        (isCreatable
+                        (isCreatable && inputValue
                           ? filteredOptions.slice(0, -1)
                           : filteredOptions
-                        ).filter(v => !value.includes(v))
+                        ).filter((v) => !value.includes(v))
                       );
                     }}
                   >
@@ -325,10 +322,10 @@ export default function MultiSelect({
                   </button>
                   <button
                     className="hover:text-primary-default"
-                    onMouseDown={e => {
+                    onMouseDown={(e) => {
                       e.preventDefault();
                       setSelectedItems(
-                        value.filter(v => filteredOptions.includes(v))
+                        value.filter((v) => filteredOptions.includes(v))
                       );
                     }}
                   >
@@ -340,7 +337,7 @@ export default function MultiSelect({
                     options={filteredOptions}
                     itemPropsGetter={({ item, index }) =>
                       getItemProps({
-                        item, 
+                        item,
                         index,
                         onClick: (e: React.MouseEvent) => {
                           //eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -360,7 +357,7 @@ export default function MultiSelect({
                     options={filteredOptions}
                     itemPropsGetter={({ item, index }) =>
                       getItemProps({
-                        item, 
+                        item,
                         index,
                         onClick: (e: React.MouseEvent) => {
                           //eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -381,6 +378,6 @@ export default function MultiSelect({
           ) : null}
         </Popper>
       </div>
-      </div>
+    </div>
   );
 }
