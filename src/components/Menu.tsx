@@ -65,6 +65,7 @@ export function MenuButton(props: {
   children: ReactNode;
   className?: string;
   variant?: "outline";
+  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }) {
   const context = useContext(MenuContext);
 
@@ -77,7 +78,10 @@ export function MenuButton(props: {
           : null,
         props.className
       )}
-      onClick={() => context.setIsOpen(prev => !prev)}
+      onClick={(e) => {
+        context.setIsOpen((prev) => !prev);
+        props.onClick?.(e);
+      }}
       onMouseEnter={
         context.isSubMenu ? () => context.setIsOpen(true) : () => {}
       }
@@ -99,22 +103,27 @@ export function MenuButton(props: {
 }
 
 export function UnstyledMenuButton({
-  as: Tag = "button",
+  as: Tag = "div",
   children,
   className,
   style,
+  onClick,
 }: {
   as?: React.ElementType;
   children?: ReactNode;
   className?: string;
   style?: CSSProperties;
+  onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }) {
   const context = useContext(MenuContext);
 
   return (
     <Tag
-      className={className}
-      onClick={() => context.setIsOpen(prev => !prev)}
+      className={classes("cursor-pointer", className)}
+      onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+        context.setIsOpen((prev) => !prev);
+        onClick?.(e);
+      }}
       ref={context.setButtonRef}
       style={style || {}}
     >
@@ -191,7 +200,7 @@ export function MenuItem(props: {
   const context = useContext(MenuContext);
   return (
     <div
-      onClick={e => {
+      onClick={(e) => {
         if (!props.disableCloseOnClick) {
           context.setIsOpen(false);
         }

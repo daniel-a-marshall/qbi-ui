@@ -25,12 +25,14 @@ declare function MenuButton(props: {
     children: ReactNode;
     className?: string;
     variant?: "outline";
+    onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }): JSX.Element;
-declare function UnstyledMenuButton({ as: Tag, children, className, style, }: {
+declare function UnstyledMenuButton({ as: Tag, children, className, style, onClick, }: {
     as?: React.ElementType;
     children?: ReactNode;
     className?: string;
     style?: CSSProperties;
+    onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }): JSX.Element;
 declare function MenuList(props: {
     children: ReactNode;

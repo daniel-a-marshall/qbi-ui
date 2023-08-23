@@ -9,12 +9,14 @@ export declare function MenuButton(props: {
     children: ReactNode;
     className?: string;
     variant?: "outline";
+    onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }): JSX.Element;
-export declare function UnstyledMenuButton({ as: Tag, children, className, style, }: {
+export declare function UnstyledMenuButton({ as: Tag, children, className, style, onClick, }: {
     as?: React.ElementType;
     children?: ReactNode;
     className?: string;
     style?: CSSProperties;
+    onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }): JSX.Element;
 export declare function MenuList(props: {
     children: ReactNode;
