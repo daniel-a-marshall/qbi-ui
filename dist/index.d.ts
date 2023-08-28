@@ -4,6 +4,7 @@ import { PopperProps } from '@mui/base/Popper';
 type FullScreenOverlayProps = {
     children: ReactNode;
     onClose?: () => void;
+    onContextMenu?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
     className?: string;
     asPortal?: boolean;
     disableClickOutside?: boolean;

@@ -6,6 +6,7 @@ import { classes } from "./utils";
 export type FullScreenOverlayProps = {
   children: ReactNode;
   onClose?: () => void;
+  onContextMenu?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   className?: string;
   asPortal?: boolean;
   //TODO this could be removed in favor of not passing in an onClose function will need to update everywhere
@@ -16,6 +17,7 @@ function Overlay({
   children,
   className,
   onClose,
+  onContextMenu,
   disableClickOutside,
 }: FullScreenOverlayProps) {
   return (
@@ -24,11 +26,12 @@ function Overlay({
         "fixed top-0 left-0 h-full w-full bg-black/10 flex items-center justify-center p-8 z-30",
         className
       )}
-      onClick={e => {
+      onClick={(e) => {
         if (e.target === e.currentTarget && !disableClickOutside) {
           onClose?.();
         }
       }}
+      onContextMenu={onContextMenu}
     >
       {children}
     </div>
