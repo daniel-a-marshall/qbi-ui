@@ -1,10 +1,11 @@
-import React, { ReactNode, CSSProperties, ReactElement, InputHTMLAttributes, TextareaHTMLAttributes } from 'react';
+import * as React from 'react';
+import React__default, { ReactNode, CSSProperties, ReactElement, InputHTMLAttributes, TextareaHTMLAttributes } from 'react';
 import { PopperProps } from '@mui/base/Popper';
 
 type FullScreenOverlayProps = {
     children: ReactNode;
     onClose?: () => void;
-    onContextMenu?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+    onContextMenu?: (e: React__default.MouseEvent<HTMLDivElement, MouseEvent>) => void;
     className?: string;
     asPortal?: boolean;
     disableClickOutside?: boolean;
@@ -26,14 +27,14 @@ declare function MenuButton(props: {
     children: ReactNode;
     className?: string;
     variant?: "outline";
-    onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    onClick?: (e: React__default.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }): JSX.Element;
 declare function UnstyledMenuButton({ as: Tag, children, className, style, onClick, }: {
-    as?: React.ElementType;
+    as?: React__default.ElementType;
     children?: ReactNode;
     className?: string;
     style?: CSSProperties;
-    onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+    onClick?: (e: React__default.MouseEvent<HTMLElement, MouseEvent>) => void;
 }): JSX.Element;
 declare function MenuList(props: {
     children: ReactNode;
@@ -47,7 +48,7 @@ declare function MenuList(props: {
 declare function MenuItem(props: {
     children: ReactNode | ((closeMenu: () => void) => ReactNode);
     disableCloseOnClick?: boolean;
-    onClick?: (event: React.MouseEvent<HTMLElement>) => void;
+    onClick?: (event: React__default.MouseEvent<HTMLElement>) => void;
     className?: string;
     submenu?: boolean;
 }): JSX.Element;
@@ -95,21 +96,21 @@ declare function AutoFill({ options, onChange, isCreatable, inputRef, className,
     options: string[];
     onChange: (value: string) => void;
     isCreatable?: boolean;
-    inputRef?: React.MutableRefObject<HTMLInputElement | null>;
+    inputRef?: React__default.MutableRefObject<HTMLInputElement | null>;
     className?: string;
 }): JSX.Element;
 
-declare const Button: React.ForwardRefExoticComponent<{
-    children: React.ReactNode;
-    as?: React.ElementType<any> | undefined;
+declare const Button: React__default.ForwardRefExoticComponent<{
+    children: React__default.ReactNode;
+    as?: React__default.ElementType<any> | undefined;
     variant?: "outline" | "error" | undefined;
-} & React.ButtonHTMLAttributes<HTMLButtonElement> & React.RefAttributes<HTMLElement>>;
+} & React__default.ButtonHTMLAttributes<HTMLButtonElement> & React__default.RefAttributes<HTMLElement>>;
 
-declare const IconButton: React.ForwardRefExoticComponent<{
-    children: React.ReactNode;
-    as?: React.ElementType<any> | undefined;
+declare const IconButton: React__default.ForwardRefExoticComponent<{
+    children: React__default.ReactNode;
+    as?: React__default.ElementType<any> | undefined;
     variant?: "light" | undefined;
-} & React.ButtonHTMLAttributes<HTMLButtonElement> & React.RefAttributes<HTMLElement>>;
+} & React__default.ButtonHTMLAttributes<HTMLButtonElement> & React__default.RefAttributes<HTMLElement>>;
 
 declare function SplitButton(props: {
     label: string;
@@ -142,6 +143,23 @@ type ChipInputProps = {
 };
 declare function ChipInput({ value, onChange, className, placeHolder, maxRows, }: ChipInputProps): JSX.Element;
 
+declare function ContextMenu({ x, y, children, onClose, }: {
+    x: number;
+    y: number;
+    children: ReactNode;
+    onClose: () => void;
+}): JSX.Element;
+declare function ContextMenuList({ className, children, }: {
+    className?: string;
+    children: ReactNode;
+}): JSX.Element;
+declare function ContextMenuItem({ children, disableCloseOnClick, onClick, className, }: {
+    children: ReactNode;
+    disableCloseOnClick?: boolean;
+    onClick?: (event: React__default.MouseEvent<HTMLElement>) => void;
+    className?: string;
+}): JSX.Element;
+
 type ModalProps = {
     children: ReactNode;
     onClose: () => void;
@@ -170,7 +188,7 @@ type AvatarProps = {
     imageUrl?: string;
     alt?: string;
     size?: keyof typeof avatarSize;
-    onClick?: (event: React.MouseEvent) => void;
+    onClick?: (event: React__default.MouseEvent) => void;
     className?: string;
     style?: {
         [key: string]: any;
@@ -178,4 +196,8 @@ type AvatarProps = {
 };
 declare function Avatar({ size, ...props }: AvatarProps): JSX.Element;
 
-export { AutoFill, Avatar, Button, ChipInput, CircleSpinner, FormControl, FullScreenOverlay, IconButton, Input, Menu, MenuButton, MenuItem, MenuList, Modal, MultiSelect as Multiselect, ObjectSelect, Select, SplitButton, TextArea, UnstyledMenuButton };
+declare function Portal({ children }: {
+    children?: ReactNode;
+}): React.ReactPortal;
+
+export { AutoFill, Avatar, Button, ChipInput, CircleSpinner, ContextMenu, ContextMenuItem, ContextMenuList, FormControl, FullScreenOverlay, IconButton, Input, Menu, MenuButton, MenuItem, MenuList, Modal, MultiSelect as Multiselect, ObjectSelect, Portal, Select, SplitButton, TextArea, UnstyledMenuButton };
